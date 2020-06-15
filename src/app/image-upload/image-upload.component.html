@@ -1,0 +1,33 @@
+﻿<div class="p-4">
+  <div class="container">
+    <h1>Hey {{user.firstName}}</h1>
+    <form>
+      <div class="form-group">
+        <fieldset class="form-group">
+
+          <label>Upload Image</label>
+          {{imageError}}
+
+          <a class="btn btn-danger" (click)="removeImage()" *ngIf="isImageSaved">Remove</a>
+          <div class="custom-file fileInputProfileWrap">
+            <input type="file" (change)="fileChangeEvent($event)" class="fileInputProfile">
+            <div class="img-space">
+
+              <ng-container *ngIf="isImageSaved; else elseTemplate">
+                <img [src]="cardImageBase64" />
+              </ng-container>
+              <ng-template #elseTemplate>
+                <p>{{cardImageBase64}}</p>
+                <img src="https://wiki.tripwireinteractive.com/images/4/47/Placeholder.png" class="img-responsive"
+                  height="300" width="300">
+              </ng-template>
+
+            </div>
+
+          </div>
+        </fieldset>
+      </div>
+   
+    </form>
+
+  </div>

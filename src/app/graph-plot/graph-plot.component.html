@@ -1,0 +1,29 @@
+﻿<div class="p-4">
+  <div class="container">
+    <h1>Hey {{user.firstName}}</h1>
+
+    <div class="row">
+      <div class="col">
+        <div ngbDropdown class="d-inline-block">
+          <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Sort By Education</button>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button ngbDropdownItem *ngFor="let EducationList of EducationLists" (click)="ChangeEducationList(EducationList)">{{EducationList}}</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div style="min-width: 250px;float: right">
+      <p>Select Date Range</p>
+      <input type="text" style="min-width: 210px;" name="daterangeInput" daterangepicker [options]="options"
+        (selected)="selectedDate($event, daterange)" />
+    </div>
+    <div class="chartjs-container">
+      <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+        [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins"
+        (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+      </canvas>
+
+    </div>
+
+  </div>
