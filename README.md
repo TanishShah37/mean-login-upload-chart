@@ -1,7 +1,7 @@
 # mean-login-upload-chart
 
 Angular 9 
-Fake Backen. with JWT Interceptor
+Fake Backend. with JWT Interceptor
 
 Data Used from a Google Sheet.
 
