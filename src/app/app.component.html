@@ -3,9 +3,19 @@
     <div class="navbar-nav">
         <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
         <a class="nav-item nav-link" routerLink="/users" routerLinkActive="active">Users</a>
+        <a class="nav-item nav-link" routerLink="/upload">Image Upload</a>
+        <a class="nav-item nav-link" routerLink="/graph">Graph Plot</a>
+
         <a class="nav-item nav-link" (click)="logout()">Logout</a>
     </div>
 </nav>
+
+<div class="text-center mt-4">
+    <h1>
+        Graph Plotting
+    </h1>
+  
+</div>
 
 <!-- main app container -->
 <div class="app-container" [ngClass]="{ 'bg-light': user }">
@@ -13,10 +23,4 @@
     <router-outlet></router-outlet>
 </div>
 
-<!-- credits -->
-<div class="text-center mt-4">
-    <p>
-        MEAN-Login-Upload-Chart
-    </p>
 
-</div>

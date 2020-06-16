@@ -42,14 +42,13 @@ export class GraphPlotComponent {
     errorData = [];
     acceptDate = [];
     acceptLabel = [];
-    unique;
     startDate;
     endDate;
     sortNumbersofArray;
     ngbDropdown
 
 
-    EducationLists: string[] = ["PostGraduate", "Graduate", "XIIth","SSC","BelowSSC"];
+    EducationLists: string[] = ["PostGraduate", "Graduate", "XIIth", "SSC", "BelowSSC"];
     selectedEducationList: string = "Graduate";
 
     ChangeEducationList(newEducationList: string) {
@@ -122,55 +121,51 @@ export class GraphPlotComponent {
                 }, {});
             })
 
-            this.resultJSON = this.resultJSON.sort(function (dateValue1, dateValue2) {
-                var finalDates1 = dateValue1.date.split('/').reverse().join(),
-                    finalDates2 = dateValue2.date.split('/').reverse().join();
-                return finalDates1 < finalDates2 ? -1 : (finalDates1 > finalDates2 ? 1 : 0);
-            });
-
-            this.unique = (value, index, self) => {
-                return self.indexOf(value) === index
-            }
-
             this.labels = [];
+            this.acceptAmountValues = [];
+            this.rejectAmountValues = [];
+            this.errorAmountValues = [];
+
+            this.resultJSON = this.resultJSON
+                .filter(elem => elem.education == this.selectedEducationList)
+                .map(elem => {
+                    elem.date = elem.date.substring(0, elem.date.length - 1)
+                    elem.amount = parseInt(elem.amount)
+                    return elem
+                })
+                .reduce((acc, curr) => {
+                    for (const elem of acc) {
+                        if (elem.date == curr.date && elem.education == curr.education && elem.decision == curr.decision) {
+                            elem.amount += curr.amount;
+                            return acc;
+                        }
+                    }
+                    acc.push(curr);
+                    return acc;
+                }, [])
+                .sort(function (dateValue1, dateValue2) {
+                    var finalDates1 = dateValue1.date.split('/').reverse().join(),
+                        finalDates2 = dateValue2.date.split('/').reverse().join();
+                    return finalDates1 < finalDates2 ? -1 : (finalDates1 > finalDates2 ? 1 : 0);
+                });
 
             this.resultJSON.forEach(element => {
-                this.acceptData.push(element.amount)
-                this.acceptLabel.push(element.decision)
-                element.date = element.date.substring(0, element.date.length - 1)
-
-                if (element.decision == 'ACCEPT') {
-                    if (element.education == this.selectedEducationList) {
-                        this.acceptAmountValues.push(element.amount)
-                        this.acceptDateValues.push(element.date)
-                        this.labels.push(element.date)
-                    }
+                if (this.labels[this.labels.length - 1] != element.date) {
+                    this.labels.push(element.date);
+                    this.acceptAmountValues.push(0);
+                    this.rejectAmountValues.push(0);
+                    this.errorAmountValues.push(0);
                 }
-                else {
-                    this.acceptAmountValues.push(0)
+                if (element.decision == 'ACCEPT') {
+                    this.acceptAmountValues[this.acceptAmountValues.length - 1] = element.amount;
                 }
                 if (element.decision == 'REJECT') {
-                    if (element.education == this.selectedEducationList) {
-                        this.rejectAmountValues.push(element.amount)
-                        this.rejectDateValues.push(element.date)
-                        this.labels.push(element.date)
-                    }
-                }
-                else {
-                    this.rejectAmountValues.push(0)
+                    this.rejectAmountValues[this.rejectAmountValues.length - 1] = element.amount;
                 }
                 if (element.decision == 'ERR') {
-                    if (element.education == this.selectedEducationList) {
-                        this.errorAmountValues.push(element.amount)
-                        this.errorDateValues.push(element.date)
-                        this.labels.push(element.date);
-                    }
-                }
-                else {
-                    this.errorAmountValues.push(0)
+                    this.errorAmountValues[this.errorAmountValues.length - 1] = element.amount;
                 }
             });
-
             this.chartGenerator()
         });
     }
@@ -183,7 +178,8 @@ export class GraphPlotComponent {
 
         ];
 
-        this.lineChartLabels = this.labels.filter(this.unique);
+        this.lineChartLabels = this.labels
+
         this.lineChartOptions = this.ChartOptions = {
             responsive: true,
             scales: {

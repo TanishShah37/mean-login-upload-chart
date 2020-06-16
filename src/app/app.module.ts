@@ -1,28 +1,37 @@
-﻿import { NgModule } from '@angular/core';
+﻿import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-
+import { ChartsModule } from 'ng2-charts';
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
-
 import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { AppComponent } from './app.component';
 import { AlertComponent } from './_components';
 import { HomeComponent } from './home';
+import { ImageUploadComponent } from './image-upload';
+import { GraphPlotComponent } from './graph-plot';
+import { Daterangepicker } from 'ng2-daterangepicker';;
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 
 @NgModule({
     imports: [
         BrowserModule,
         ReactiveFormsModule,
+        FormsModule,
         HttpClientModule,
-        AppRoutingModule
+        AppRoutingModule,
+        ChartsModule,
+        Daterangepicker,
+        NgbModule    
     ],
     declarations: [
         AppComponent,
         AlertComponent,
-        HomeComponent
+        HomeComponent,
+        ImageUploadComponent,
+        GraphPlotComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
@@ -33,4 +42,6 @@ import { HomeComponent } from './home';
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule { };
+
+
+export class AppModule { "allowSyntheticDefaultImports": true };
